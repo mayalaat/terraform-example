@@ -22,5 +22,12 @@ terraform destroy
 terraform apply --destroy
 terraform plan --destroy
 ```
-
 ### [Coreflow](https://developer.hashicorp.com/terraform/intro/core-workflow)
+
+```
+terraform state list
+```
+
+```
+terraform state show aws_s3_bucket.bucket
+```
