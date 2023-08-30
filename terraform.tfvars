@@ -1,1 +1,2 @@
-bucket_name = "solmedia-bucket"
+bucket_name   = "solmedia-bucket"
+dynamodb_name = "catalog"
