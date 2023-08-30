@@ -6,7 +6,7 @@ resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket_name
 
   tags = {
-    Environment = "Dev"
+    Environment = var.env
     Project     = "Terraform course"
   }
 }
@@ -56,7 +56,7 @@ data "aws_iam_policy_document" "main" {
 data "terraform_remote_state" "remote_lambda" {
   backend = "s3"
   config  = {
-    bucket = "solmedia-bucket"
+    bucket = var.bucket_name
   }
 }
 

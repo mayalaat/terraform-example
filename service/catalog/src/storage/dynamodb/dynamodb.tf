@@ -1,8 +1,8 @@
 resource "aws_dynamodb_table" "apps_store" {
-  name           = var.dynamodb_name
+  name           = "${var.env}-${var.dynamodb_name}"
   billing_mode   = "PROVISIONED"
-  read_capacity  = 1
-  write_capacity = 1
+  read_capacity  = var.read_capacity
+  write_capacity = var.write_capacity
   hash_key       = "ImageId"
   range_key      = "LastUpdatedTime"
 
@@ -17,7 +17,7 @@ resource "aws_dynamodb_table" "apps_store" {
   }
 
   tags = {
-    Environment = "Dev"
+    Environment = var.env
     Project     = "Terraform course"
   }
 }
