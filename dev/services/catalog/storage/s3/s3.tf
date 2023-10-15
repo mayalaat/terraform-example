@@ -6,7 +6,7 @@ resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket_name
 
   tags = {
-    Environment = "Dev"
+    Environment = var.env
     Project     = "Terraform course"
   }
 }
@@ -52,14 +52,21 @@ data "aws_iam_policy_document" "main" {
   }
 }
 
+// get arn from lambda tfstate
+data "terraform_remote_state" "remote_lambda" {
+  backend = "s3"
+  config  = {
+    bucket = var.bucket_name
+  }
+}
+
+// send s3 notification to lambda
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = aws_s3_bucket.bucket.id
 
   lambda_function {
     events              = ["s3:ObjectCreated:*"]
-    lambda_function_arn = aws_lambda_function.catalog-writer.arn
+    lambda_function_arn = data.terraform_remote_state.remote_lambda.outputs.lambda_arn
     filter_suffix       = ".png"
   }
-
-  depends_on = [aws_lambda_permission.allow_bucket]
 }
